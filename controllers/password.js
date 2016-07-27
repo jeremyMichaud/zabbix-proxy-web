@@ -6,14 +6,16 @@ var exec = require('child_process').exec;
 var bodyParser = require('body-parser');
 var auth = require('./auth');
 
+//We create a sub-app, more about sub-app: http://expressjs.com/fr/api.html#app.mountpath
 var sub_app = express();
 var urlencodeParser = bodyParser.urlencoded({ extended: false });
 
-
+//The main page of this sub-app just render the form
 sub_app.get('/', auth.auth, function (req, res) {
 	res.render('pages/password.ejs', {message: ""});
 });
 
+//When POST informations are sent, this save them
 sub_app.post('/', auth.auth, urlencodeParser, function (req, res) {
 	//User to change password
 	var username = "pi";

@@ -4,11 +4,15 @@ var bodyParser = require('body-parser');
 var auth = require('./auth');
 var async = require("async");
 
+//We create a sub-app, more about sub-app: http://expressjs.com/fr/api.html#app.mountpath
 var sub_app = express();
 var urlencodeParser = bodyParser.urlencoded({ extended: false });
 
+//This function collects informations and render the web page
 function render(req, res, message, error){
+	//These functions are executed in parallel
 	async.parallel([
+		//Get the status of the SSH service (running or stopped)
 		function(callback) {
 			exec('service --status-all 2> /dev/null | grep ssh', (error, stdout, stderr) => {
 				if (error) {
@@ -19,8 +23,9 @@ function render(req, res, message, error){
 				callback();
 			});
 		},
+		//Get if the ssh service will start on boot or not
 		function(callback) {
-			exec("echo /etc/rc?.d/* | cut --delimiter=' ' -f1-50 --output-delimiter=$'\n' | grep ssh | cat", (error, stdout, stderr) => {
+			exec("echo /etc/rc?.d/* | cut --delimiter=' ' -f1-50 --output-delimiter=$'\n' | grep S.*ssh | cat", (error, stdout, stderr) => {
 				if (error) {
 					console.error(`exec error: ${error}`);
 					return;
@@ -30,6 +35,7 @@ function render(req, res, message, error){
 			});
 		}
 	],
+	//After the collect of every informations, render the page
 	function(err, results) {
 		res.render('pages/ssh.ejs', {
 			message: message,
@@ -40,14 +46,19 @@ function render(req, res, message, error){
 		});
 	});
 }
+
+//The main page of this sub-app just render the form
 sub_app.get('/', auth.auth, function (req, res) {
 	render(req, res, "", false);
 });
 
+//When POST informations are sent, it choose the right action
 
+//If this page is accessed by a GET method, it just render the page
 sub_app.get('/stop-ssh', auth.auth, function (req, res) {
 	res.redirect(req.baseUrl);
 });
+//Stop ssh service
 sub_app.post('/stop-ssh', auth.auth, urlencodeParser, function (req, res) {
 	exec('service ssh stop', (error, stdout, stderr) => {
 			if (error) {
@@ -58,9 +69,11 @@ sub_app.post('/stop-ssh', auth.auth, urlencodeParser, function (req, res) {
 		});
 });
 
+//If this page is accessed by a GET method, it just render the page
 sub_app.get('/start-ssh', auth.auth, function (req, res) {
 	res.redirect(req.baseUrl);
 });
+//Start ssh service
 sub_app.post('/start-ssh', auth.auth, urlencodeParser, function (req, res) {
 	exec('service ssh start', (error, stdout, stderr) => {
 			if (error) {
@@ -71,11 +84,13 @@ sub_app.post('/start-ssh', auth.auth, urlencodeParser, function (req, res) {
 		});
 });
 
+//If this page is accessed by a GET method, it just render the page
 sub_app.get('/enable-ssh', auth.auth, function (req, res) {
 	res.redirect(req.baseUrl);
 });
+//Enable ssh on startup
 sub_app.post('/enable-ssh', auth.auth, urlencodeParser, function (req, res) {
-	exec('update-rc.d ssh defaults', (error, stdout, stderr) => {
+	exec('update-rc.d ssh enable', (error, stdout, stderr) => {
 			if (error) {
 				console.error(`exec error: ${error}`);
 				return;
@@ -84,11 +99,13 @@ sub_app.post('/enable-ssh', auth.auth, urlencodeParser, function (req, res) {
 		});
 });
 
+//If this page is accessed by a GET method, it just render the page
 sub_app.get('/disable-ssh', auth.auth, function (req, res) {
 	res.redirect(req.baseUrl);
 });
+//Disable ssh on startup
 sub_app.post('/disable-ssh', auth.auth, urlencodeParser, function (req, res) {
-	exec('update-rc.d -f ssh remove', (error, stdout, stderr) => {
+	exec('update-rc.d ssh disable', (error, stdout, stderr) => {
 			if (error) {
 				console.error(`exec error: ${error}`);
 				return;

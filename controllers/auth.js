@@ -2,7 +2,7 @@ var basicAuth = require('basic-auth');
 var sqlite3 = require('sqlite3').verbose();
 var sha1 = require('sha1');
 
-//Login middleware
+//Login middleware (more about middleware: http://expressjs.com/en/4x/api.html#app.use
 var auth = function (req, res, next) {
 	function unauthorized(res) {
 		res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
