@@ -1,0 +1,65 @@
+<% include ../partials/head %>
+<div class="container">
+	<% if(message && !error){ %>
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<%= message %>
+	</div>
+	<% } else if(message){ %>
+	<div class="alert alert-danger alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<%= message %>
+	</div>
+	<% } %>
+	<div class="page-header">
+		<h1>Settings</h1>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h1 class="panel-title">Network settings</h1>
+		</div>
+		<div class="panel-body">
+			<form method="post" action="">
+				<fieldset class="form-group">
+					<label for="hostname">Hostname</label>
+					<input type="text" name="hostname" class="form-control" id="hostname" placeholder="Hostname" value="<%=hostname%>">
+				</fieldset>
+				<fieldset class="form-group">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="useDhcp" id="dhcp" <%if(dhcp){%>checked<%}%> > <b>Use DHCP</b>
+						</label>
+					</div>
+				</fieldset>
+				<div id="noDhcp" <%if(dhcp){%>style="display: none;"<%}%> >
+					<fieldset class="form-group">
+						<label for="address">IP address</label>
+						<input type="text" name="address" class="form-control" id="address" placeholder="0.0.0.0" value="<%=address%>" >
+					</fieldset>
+					<fieldset class="form-group">
+						<label for="netmask">Mask</label>
+						<input type="text" name="netmask" class="form-control" id="netmask" placeholder="255.255.255.0" value="<%=netmask%>" >
+					</fieldset>
+					<fieldset class="form-group">
+						<label for="gateway">Gateway</label>
+						<input type="text" name="gateway" class="form-control" id="gateway" placeholder="0.0.0.0" value="<%=gateway%>" >
+					</fieldset>
+					<fieldset class="form-group">
+						<label for="dns">DNS server</label>
+						<input type="text" name="dns" class="form-control" id="dns" placeholder="0.0.0.0" value="<%=dns%>" >
+					</fieldset>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	$( "#dhcp" ).click(function() {
+		if($("#dhcp").is(':checked'))
+			$("#noDhcp").hide();
+		else
+			$("#noDhcp").show();
+	});
+</script>
+<% include ../partials/foot %>

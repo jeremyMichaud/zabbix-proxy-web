@@ -1,0 +1,19 @@
+<% include ../partials/head %>
+<div class="container">
+	<p id="message">
+		System rebooting...
+	</p>
+<div class="container">
+<script>
+var time = 30;
+function wait(){
+	document.getElementById('message').innerHTML = "System rebooting (" + time-- + ")";
+	if(time === 0){
+		window.location.href='/';
+	}
+	setTimeout(wait, 1000);
+}
+setTimeout(wait, 1000);
+</script>
+
+<% include ../partials/foot %>

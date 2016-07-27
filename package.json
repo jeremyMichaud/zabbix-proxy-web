@@ -1,0 +1,23 @@
+{
+  "name": "raspi_zabbix-proxy_admin",
+  "version": "1.0.0",
+  "description": "Zabbix proxy administration webpage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jérémy Michaud",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.0.1",
+    "basic-auth": "^1.0.4",
+    "body-parser": "^1.15.2",
+    "ejs": "^2.5.1",
+    "express": "^4.14.0",
+    "network": "^0.2.1",
+    "passwd-linux": "^1.3.1",
+    "setup": "0.0.3",
+    "sha1": "^1.1.1",
+    "sqlite3": "^3.1.4"
+  }
+}

@@ -1,0 +1,39 @@
+<% include ../partials/head %>
+<div class="container">
+	<% if(message && !error){ %>
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<%= message %>
+	</div>
+	<% } else if(message){ %>
+	<div class="alert alert-danger alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<%= message %>
+	</div>
+	<% } %>
+	<div class="page-header">
+		<h1>Zabbix proxy configuration</h1>
+	</div>
+	<form method="post" action="">
+		<% for(var i in content) { %>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h1 class="panel-title"><%- content[i].title %></h1>
+				</div>
+				<div class="panel-body">
+					<% for(var j in content[i].content) { %>
+						<fieldset class="form-group">
+							<a href="#<%=content[i].content[j].title%>collapse" data-toggle="collapse"><label for="<%=content[i].content[j].title%>"><%=content[i].content[j].title%></label></a>
+							<div id="<%=content[i].content[j].title%>collapse" class="collapse">
+								<%-content[i].content[j].description%>
+							</div>
+							<input type="text" name="<%=content[i].content[j].title%>" class="form-control" id="<%=content[i].content[j].title%>" value="<%=content[i].content[j].value%>" >
+						</fieldset>
+					<% } %>
+				</div>
+			</div>
+		<% } %>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>
+<% include ../partials/foot %>

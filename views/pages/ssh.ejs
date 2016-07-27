@@ -1,0 +1,80 @@
+<% include ../partials/head %>
+<div class="container">
+	<% if(message && !error){ %>
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<%= message %>
+	</div>
+	<% } else if(message){ %>
+	<div class="alert alert-danger alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<%= message %>
+	</div>
+	<% } %>
+	<div class="page-header">
+		<h1>SSH</h1>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h1 class="panel-title">Status</h1>
+		</div>
+		<div class="panel-body">
+			<p>
+				<% if(ssh_running){ %>
+					Service SSH is running.
+				<% } else { %>
+					Service SSH is stopped.
+				<% } %>
+			</p>
+		</div>
+		<div class="panel-footer">
+			<% if(ssh_running){ %>
+				<p>
+					<form action="<%=base_url%>/stop-ssh" method="post" >
+						<button type="submit" class="btn btn-default"  disabled="disabled" >Start</button>
+						<button type="submit" class="btn btn-danger">Stop</button>
+					</form>
+				</p>
+			<% } else { %>
+				<p>
+					<form action="<%=base_url%>/start-ssh" method="post" >
+						<button type="submit" class="btn btn-success">Start</button>
+						<button type="submit" class="btn btn-default"  disabled="disabled" >Stop</button>
+					</form>
+				</p>
+			<% } %>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h1 class="panel-title">Service running on startup</h1>
+		</div>
+		<div class="panel-body">
+			<p>
+				<% if(ssh_startup_enable){ %>
+					Service SSH is enabled on startup.
+				<% } else { %>
+					Service SSH is disabled on startup.
+				<% } %>
+			</p>
+		</div>
+		<div class="panel-footer">
+			<% if(ssh_startup_enable){ %>
+				<p>
+					<form action="<%=base_url%>/disable-ssh" method="post" >
+						<button type="submit" class="btn btn-default"  disabled="disabled" >Enable</button>
+						<button type="submit" class="btn btn-danger">Disable</button>
+					</form>
+				</p>
+			<% } else { %>
+				<p>
+					<form action="<%=base_url%>/enable-ssh" method="post" >
+						<button type="submit" class="btn btn-success">Enable</button>
+						<button type="submit" class="btn btn-default"  disabled="disabled" >Disable</button>
+					</form>
+				</p>
+			<% } %>
+		</div>
+	</div>
+</div>
+<% include ../partials/foot %>
