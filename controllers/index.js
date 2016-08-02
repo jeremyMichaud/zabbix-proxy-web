@@ -36,8 +36,13 @@ app.use("/network", network.site);
 var config = require('./config');
 app.use("/config", config.site);
 
+//PSK config sub-app
+var psk = require('./psk');
+app.use("/psk", psk.site);
+
 app.get('/logout', function (req, res) {
-	res.redirect(401, '/');
+	//res.redirect(401, '/');
+	res.status(401).render('pages/logout.ejs');
 });
 
 app.get('/ssh', auth.auth, function (req, res){

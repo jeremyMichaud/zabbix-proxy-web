@@ -1,13 +1,14 @@
 <% include ../partials/head %>
 <div class="container">
+	<h1>You have been logged out.</h1>
 	<p id="message">
-		System rebooting...
+		Redirecting to the main page ...
 	</p>
 <div class="container">
 <script>
-var time = 30;
+var time = 5;
 function wait(){
-	document.getElementById('message').innerHTML = "System rebooting (" + time-- + ")";
+	document.getElementById('message').innerHTML = "Redirecting to the main page  (" + time-- + ")";
 	if(time === 0){
 		window.location.href='/';
 	} else {
