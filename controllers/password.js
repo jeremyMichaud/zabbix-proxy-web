@@ -5,6 +5,7 @@ var sha1 = require('sha1');
 var exec = require('child_process').exec;
 var bodyParser = require('body-parser');
 var auth = require('./auth');
+var basicAuth = require('basic-auth');
 
 //We create a sub-app, more about sub-app: http://expressjs.com/fr/api.html#app.mountpath
 var sub_app = express();
@@ -18,7 +19,7 @@ sub_app.get('/', auth.auth, function (req, res) {
 //When POST informations are sent, this save them
 sub_app.post('/', auth.auth, urlencodeParser, function (req, res) {
 	//User to change password
-	var username = "pi";
+	var username = basicAuth(req).name;
 	
 	//Check password == confirm password
 	if(req.body.password != req.body.passwordConfirm){
